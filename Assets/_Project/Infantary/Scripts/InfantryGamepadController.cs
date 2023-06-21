@@ -16,6 +16,7 @@ public class InfantryGamepadController : MonoBehaviour
     private Vector2 rotationInput;
     private bool isRotationLocked = false;
     private PlayerDeviceController playerDeviceController;
+    private PlayerHealth playerHealth;
     
     public void OnGetMoveInputs(InputAction.CallbackContext ctx)
     {
@@ -37,6 +38,7 @@ public class InfantryGamepadController : MonoBehaviour
     {
         playerDeviceController = GetComponent<PlayerDeviceController>();
         characterController = GetComponent<CharacterController>();
+        playerHealth = GetComponent<PlayerHealth>();
     }
 
     private void Update()
@@ -46,11 +48,12 @@ public class InfantryGamepadController : MonoBehaviour
 
     private void Move()
     {
+        if(playerHealth.isDead) return;
+
         if(controlScheme != playerDeviceController.device) return;
         
         characterController.Move(moveSpeed * Time.deltaTime * movementInput);
         
-        // Rotate the player based on input
         if (!isRotationLocked && rotationInput.magnitude > 0.1f)
         {
             float rotationAngle = Mathf.Atan2(rotationInput.x, rotationInput.y) * Mathf.Rad2Deg;
@@ -58,12 +61,10 @@ public class InfantryGamepadController : MonoBehaviour
             transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, rotationSpeed * Time.deltaTime);
         }
 
-        // Calculate movement animation based on player's facing direction
         Vector3 movementRelativeToFacing = transform.InverseTransformDirection(movementInput);
         float forwardAmount = movementRelativeToFacing.z;
         float rightAmount = movementRelativeToFacing.x;
 
-        // Update animator parameters
         animator.SetFloat($"vertical", forwardAmount);
         animator.SetFloat($"horizontal", rightAmount);
     }

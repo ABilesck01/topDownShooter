@@ -10,8 +10,10 @@ public class WeaponController : MonoBehaviour
     [SerializeField] private Transform firePoint;
     [SerializeField] private float fireRange = 100f;
     [SerializeField] private float fireRate = 0.1f;
-    [SerializeField] private float accuracy = 0.5f; // 0.0f to 1.0f
     [SerializeField] private TrailRenderer trailRenderer;
+    [Space]
+    [SerializeField] private ParticleSystem muzzleFlash;
+    [SerializeField] private GameObject bloodImpact;
 
     private float nextFireTime;
 
@@ -27,20 +29,20 @@ public class WeaponController : MonoBehaviour
 
     private void Shoot()
     {
-        // Calculate the direction with some random offset based on accuracy
-        Vector3 bulletDirection = firePoint.forward + Random.insideUnitSphere * (1f - accuracy);
-        bulletDirection.Normalize();
-
-        // Perform raycast to check for hit
+        muzzleFlash.Play();
         RaycastHit hit;
         if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, fireRange))
         {
             var trail = Instantiate(trailRenderer, firePoint.position, quaternion.identity);
             StartCoroutine(SpawnTrail(trail, hit));
+            if (hit.transform.TryGetComponent(out IDamegeble dmg))
+            {
+                Instantiate(bloodImpact, hit.point, Quaternion.LookRotation(hit.normal));
+                dmg.TakeDamage(10);
+            }
             Debug.Log("Hit object: " + hit.transform.name);
         }
 
-        // Debug draw the ray
         Debug.DrawRay(firePoint.position, firePoint.forward * fireRange, Color.red, 0.1f);
     }
 
@@ -56,13 +58,6 @@ public class WeaponController : MonoBehaviour
         }
 
         trail.transform.position = hit.point;
-        if (Physics.CheckSphere(hit.point, 0.1f))
-        {
-            if (hit.transform.TryGetComponent(out IDamegeble dmg))
-            {
-                dmg.TakeDamage(10);
-            }
-        }
         Destroy(trail.gameObject);
     }
 }

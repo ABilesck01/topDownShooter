@@ -12,9 +12,12 @@ public class PlayerHealth : MonoBehaviour, IDamegeble
     
     private int currentHealth;
 
-    public UnityAction<int> OnDamageTaken;
-    public UnityAction OnDeath;
-    
+    public UnityEvent<int> OnDamageTaken;
+    public UnityEvent OnDeath;
+    public Animator animator;
+
+    public int MaxHealth { get => maxHealth;}
+
     private void Start()
     {
         currentHealth = maxHealth;
@@ -23,6 +26,18 @@ public class PlayerHealth : MonoBehaviour, IDamegeble
     public void TakeDamage(int amount)
     {
         currentHealth -= amount;
+        OnDamageTaken?.Invoke(currentHealth);
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    [ContextMenu("Test Damage")]
+    public void TakeDamage()
+    {
+        currentHealth -= 10;
+        OnDamageTaken?.Invoke(currentHealth);
         if (currentHealth <= 0)
         {
             Die();
@@ -32,5 +47,7 @@ public class PlayerHealth : MonoBehaviour, IDamegeble
     private void Die()
     {
         isDead = true;
+        animator.SetBool("isDead", true);
+        OnDeath?.Invoke();
     }
 }
