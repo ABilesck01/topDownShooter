@@ -1,18 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class TeamViewerItem : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private TextMeshProUGUI txtName;
 
-    // Update is called once per frame
-    void Update()
+    public void Fill(string name)
     {
-        
+        txtName.text = name;
     }
 }
