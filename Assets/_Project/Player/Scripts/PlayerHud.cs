@@ -22,6 +22,12 @@ public class PlayerHud : MonoBehaviour
         hitImage.color = hitColor;
         healthBar.Initialize(player.MaxHealth, true);
         player.OnDamageTaken.AddListener(OnDamageTaken);
+        player.OnRespawn.AddListener(OnRespawn);
+    }
+
+    private void OnRespawn(int value)
+    {
+        healthBar.SetProgress(value);
     }
 
     private void OnDamageTaken(int value)

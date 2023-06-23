@@ -13,6 +13,7 @@ public class PlayerHealth : MonoBehaviour, IDamegeble
     private int currentHealth;
 
     public UnityEvent<int> OnDamageTaken;
+    public UnityEvent<int> OnRespawn;
     public UnityEvent OnDeath;
     public Animator animator;
 
@@ -21,6 +22,14 @@ public class PlayerHealth : MonoBehaviour, IDamegeble
     private void Start()
     {
         currentHealth = maxHealth;
+    }
+
+    public void Respawn()
+    {
+        currentHealth = maxHealth;
+        isDead = false;
+        animator.SetBool("isDead", false);
+        OnRespawn?.Invoke(currentHealth);
     }
 
     public void TakeDamage(int amount)
