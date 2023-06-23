@@ -5,12 +5,15 @@ using UnityEngine;
 public class ConeView : MonoBehaviour
 {
     [SerializeField] private float viewRange = 10f;
+    [SerializeField] private float attackRange = 7f;
     [SerializeField] private float viewAngle = 45f;
     [SerializeField] private Vector3 offset;
     [SerializeField] private LayerMask targetLayer;
 
     [Space]
     public Transform target;
+
+    public ConeViewState currentState;
 
     private Transform myTransform;
 
@@ -26,11 +29,22 @@ public class ConeView : MonoBehaviour
             var distance = Vector3.Distance(target.position, myTransform.position);
             if (distance > viewRange)
             {
+                currentState = ConeViewState.noView;
                 target = null;
             }
+            else if (distance > attackRange)
+            {
+                currentState = ConeViewState.onView;
+            }
+            else if(distance <= attackRange) 
+            {
+                currentState = ConeViewState.onRange;
+            }
+            else
+            {
+                currentState = ConeViewState.noView;
+            }
         }
-
-        
 
         CheckView();
     }
@@ -54,6 +68,7 @@ public class ConeView : MonoBehaviour
             }
         }
 
+        currentState = ConeViewState.noView;
         target = null;
     }
 
@@ -76,4 +91,11 @@ public class ConeView : MonoBehaviour
 
         Gizmos.DrawRay(myTransform.position + offset, (leftConeDirection + rightConeDirection).normalized * viewRange);
     }
+}
+
+public enum ConeViewState
+{
+    noView,
+    onView,
+    onRange
 }
