@@ -18,8 +18,11 @@ public class BotMovement : MonoBehaviour
 
     public Transform target;
 
+    private Animator animator;
+
     private void Awake()
     {
+        animator = GetComponent<Animator>();
         myTransform = transform;
         controller = GetComponent<BotController>();
         agent = GetComponent<NavMeshAgent>();
@@ -33,14 +36,16 @@ public class BotMovement : MonoBehaviour
 
     public void StopAgent()
     {
+        animator.SetBool("isWalking", false);
         agent.SetDestination(myTransform.position);
     }
 
     private void ChaseTransform()
     {
-        if(controller.botState != BotState.follow || target == null) return;
+        if (controller.botState != BotState.follow || target == null) return;
 
-        agent.SetDestination(transform.position);
+        animator.SetBool("isWalking", false);
+        agent.SetDestination(target.position);
     }
 
     private void Patrol()
@@ -55,7 +60,7 @@ public class BotMovement : MonoBehaviour
         }
 
         agent.SetDestination(walkPoint);
-
+        animator.SetBool("isWalking", true);
         float distanceToPoint = (myTransform.position - walkPoint).magnitude;
 
         if(distanceToPoint < 1f) 

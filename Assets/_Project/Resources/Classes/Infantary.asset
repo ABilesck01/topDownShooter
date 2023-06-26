@@ -13,5 +13,13 @@ MonoBehaviour:
   m_Name: Infantary
   m_EditorClassIdentifier: 
   className: Soldier
-  cost: 0
-  player: {fileID: -7135363024848788970, guid: 39ee3dc22aa8c054bbf69c194d14c794, type: 3}
+  cost: 100
+  MaxHealth: 50
+  damage: 10
+  alliesMesh: {fileID: 0}
+  axisMesh: {fileID: 0}
+  Description: A simple soldier equiped with a rifle.
+  alliesImage: {fileID: 21300000, guid: 5b1c5ae90f39d0045a045bf9bdac6452, type: 3}
+  playerAllies: {fileID: -7135363024848788970, guid: 39ee3dc22aa8c054bbf69c194d14c794, type: 3}
+  axisImage: {fileID: 21300000, guid: a5ff22136682780429e853fac27f0c7a, type: 3}
+  playerAxis: {fileID: 816169292157258282, guid: 7747b9ffac9a2d24e9d37c5fe5d1cf83, type: 3}

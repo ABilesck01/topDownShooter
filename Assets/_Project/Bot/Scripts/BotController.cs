@@ -23,12 +23,15 @@ public class BotController : MonoBehaviour
     {
         if (botHealth.isDead)
         {
+            botMovement.StopAgent();
+            botMovement.target = null;
             botState = BotState.dead;
             return;
         }
 
         if(coneView.currentState == ConeViewState.noView)
         {
+            botMovement.target = null;
             botState = BotState.patrol;
             return;
         }
@@ -36,12 +39,16 @@ public class BotController : MonoBehaviour
         if(coneView.currentState == ConeViewState.onView)
         {
             botState = BotState.follow;
+            botMovement.target = coneView.target;
+            botAttack.SetTarget(null);
             return;
         }
 
         if(coneView.currentState == ConeViewState.onRange)
         {
+            botMovement.target = null;
             botMovement.StopAgent();
+            botAttack.SetTarget(coneView.target);
             botState = BotState.attack;
             return;
         }

@@ -10,38 +10,73 @@ public class WeaponController : MonoBehaviour
     [SerializeField] private Transform firePoint;
     [SerializeField] private float fireRange = 100f;
     [SerializeField] private float fireRate = 0.1f;
-    [SerializeField] private int Ammo;
+    [SerializeField] private int ammo;
     [SerializeField] private float timeToReload;
     [SerializeField] private TrailRenderer trailRenderer;
     [Space]
+    [SerializeField] private AudioSource gunAudio;
     [SerializeField] private ParticleSystem muzzleFlash;
     [SerializeField] private GameObject bloodImpact;
-
+    
+    [HideInInspector]public InfantaryInputs infantaryInputs;
     private Animator animator;
-    private int currentAmmo;
-    private float nextFireTime;
 
-    private void Awake()
+    private int currentAmmo;
+    [HideInInspector]public float nextFireTime;
+    private bool hasShot = false;
+
+    private WeaponView weaponView;
+
+    public WeaponView WeaponView
     {
-        animator = GetComponent<Animator>();
-        currentAmmo = Ammo;
+        get => weaponView; set
+        { 
+            weaponView = value;
+            weaponView.SetMaxAmmo(ammo);
+        }
     }
 
-    public void OnFirePress(InputAction.CallbackContext ctx)
+
+    public virtual void Awake()
     {
-        if (ctx.ReadValue<float>() >= 1f && Time.time >= nextFireTime)
+        animator = GetComponent<Animator>();
+        currentAmmo = ammo;
+        gunAudio = GetComponent<AudioSource>();
+    }
+
+    public void SetInfantaryInput(InfantaryInputs inputs)
+    {
+        infantaryInputs = inputs;
+    }
+
+    public virtual void GetInputs()
+    {
+        if (infantaryInputs.FireInput && Time.time >= nextFireTime &&!hasShot)
         {
             Shoot();
         }
-        
+
+        if(!infantaryInputs.FireInput)
+        {
+            hasShot = false;
+        }
     }
 
-    private void Shoot()
+    public virtual void Update()
+    {
+        GetInputs();
+    }
+
+    public void Shoot()
     {
         if (currentAmmo <= 0) return;
 
+        hasShot = true;
+
         animator.SetTrigger("fire");
+        gunAudio.Play();
         muzzleFlash.Play();
+        
         RaycastHit hit;
         if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, fireRange))
         {
@@ -58,7 +93,8 @@ public class WeaponController : MonoBehaviour
         nextFireTime = Time.time + 1f / fireRate;
 
         currentAmmo--;
-        if(currentAmmo <= 0) 
+        weaponView.SetAmmo(currentAmmo);
+        if (currentAmmo <= 0) 
         {
             StartCoroutine(Reload());
         }
@@ -68,9 +104,11 @@ public class WeaponController : MonoBehaviour
 
     private IEnumerator Reload()
     {
+        weaponView.SetReloading();
         animator.SetTrigger("reload");
         yield return new WaitForSeconds(timeToReload);
-        currentAmmo = Ammo;
+        currentAmmo = ammo;
+        weaponView.SetAmmo(currentAmmo);
     }
 
     private IEnumerator SpawnTrail(TrailRenderer trail, RaycastHit hit)

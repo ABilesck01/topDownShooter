@@ -55,14 +55,17 @@ public class ConeView : MonoBehaviour
 
         foreach (Collider target in targets)
         {
-            // Check if the target is within the view angle
+            if(Vector3.Distance(myTransform.position, target.transform.position) < viewRange / 2)
+            {
+                this.target = target.transform;
+                return;
+            }
+
             Vector3 directionToTarget = target.transform.position - (myTransform.position + offset);
             float angleToTarget = Vector3.Angle(myTransform.forward, directionToTarget);
 
             if (angleToTarget <= viewAngle / 2f)
             {
-                // The target is within the cone view
-                Debug.Log("Target detected: " + target.name);
                 this.target = target.transform;
                 return;
             }
@@ -90,6 +93,10 @@ public class ConeView : MonoBehaviour
         Gizmos.DrawRay(myTransform.position + offset, rightConeDirection.normalized * viewRange);
 
         Gizmos.DrawRay(myTransform.position + offset, (leftConeDirection + rightConeDirection).normalized * viewRange);
+
+        Gizmos.DrawWireSphere(myTransform.position + offset, viewRange / 2);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(myTransform.position + offset, attackRange);
     }
 }
 

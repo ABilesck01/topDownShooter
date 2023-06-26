@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Windows;
 
 public class InfantryGamepadController : MonoBehaviour
 {
@@ -15,42 +16,36 @@ public class InfantryGamepadController : MonoBehaviour
     private Vector3 movementInput;
     private Vector2 rotationInput;
     private bool isRotationLocked = false;
-    private PlayerDeviceController playerDeviceController;
     private PlayerHealth playerHealth;
+    [HideInInspector] public InfantaryInputs infantaryInputs;
     
-    public void OnGetMoveInputs(InputAction.CallbackContext ctx)
-    {
-        var inputs = ctx.ReadValue<Vector2>();
-        movementInput = new Vector3(inputs.x, 0f, inputs.y);
-    }
-    
-    public void OnGetLookInputs(InputAction.CallbackContext ctx)
-    {
-        rotationInput = ctx.ReadValue<Vector2>();
-    }
-    
-    public void OnLockRotation(InputAction.CallbackContext ctx)
-    {
-        isRotationLocked = ctx.action.IsPressed();
-    }
     
     private void Start()
     {
-        playerDeviceController = GetComponent<PlayerDeviceController>();
         characterController = GetComponent<CharacterController>();
         playerHealth = GetComponent<PlayerHealth>();
     }
 
+    public void SetInfantaryInput(InfantaryInputs inputs)
+    {
+        infantaryInputs = inputs;
+    }
+
     private void Update()
     {
+        GetInputs();
         Move();
+    }
+
+    private void GetInputs()
+    {
+        movementInput = new Vector3(infantaryInputs.MoveInput.x, 0f, infantaryInputs.MoveInput.y);
+        rotationInput = infantaryInputs.LookInput;
     }
 
     private void Move()
     {
         if(playerHealth.isDead) return;
-
-        if(controlScheme != playerDeviceController.device) return;
         
         characterController.Move(moveSpeed * Time.deltaTime * movementInput);
         
