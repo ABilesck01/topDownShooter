@@ -15,21 +15,30 @@ public class BotHealth : MonoBehaviour, IDamegeble
         currentHealth = maxHealth;
     }
 
-    public void TakeDamage(int amount)
+    public bool TakeDamage(int amount)
     {
-        if (isDead) return;
+        if (isDead) return false;
 
         currentHealth -= amount;
         if (currentHealth <= 0)
         {
             Die();
+            return true;
         }
+
+        return false;
+    }
+
+    [ContextMenu("Kill")]
+    public void Kill()
+    {
+        TakeDamage(maxHealth);
     }
 
     private void Die()
     {
         isDead = true;
-        animator.SetBool("isDead", true);
+        animator.SetTrigger("isDead");
         Destroy(gameObject, 5);
     }
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
 
@@ -17,6 +18,7 @@ public class PlayerClassView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI txtHealth;
     [SerializeField] private TextMeshProUGUI txtDmg;
     [SerializeField] private TextMeshProUGUI txtDescr;
+    [SerializeField] private TextMeshProUGUI txtPoints;
     [SerializeField] private Image classImage;
     [Space]
     [SerializeField] private GameObject screen;
@@ -29,7 +31,20 @@ public class PlayerClassView : MonoBehaviour
     [SerializeField] private InfantaryInputs infantaryInputs;
     [SerializeField] private CameraFollow cameraFollow;
 
+    private int points = 0;
+
+    public UnityAction OnPlayerDeath;
+
     public PlayerTeam Team { get => team; set => team = value; }
+    public int Points
+    {
+        get => points; 
+        set
+        {
+            points = value;
+            txtPoints.text = points.ToString("000");
+        }
+    }
 
     private void Start()
     {
@@ -116,12 +131,24 @@ public class PlayerClassView : MonoBehaviour
         }
 
         player.InfantaryInputs = infantaryInputs;
+
         player.Controller.SetInfantaryInput(infantaryInputs);
         player.Weapon.SetInfantaryInput(infantaryInputs);
+
         player.PlayerClass = classes[index];
         player.Weapon.WeaponView = weaponView;
+
+        player.PlayerHealth.OnDeath.AddListener(OnPlayerDeath);
+
+        player.Weapon.OnKillPlayer.AddListener(AddPoints);
+
         hud.Initialize(player.PlayerHealth);
         cameraFollow.Target = player.transform;
         screen.SetActive(false);
+    }
+
+    private void AddPoints()
+    {
+        Points += 100;
     }
 }

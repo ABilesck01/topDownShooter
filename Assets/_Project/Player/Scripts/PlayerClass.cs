@@ -9,9 +9,10 @@ public class PlayerClass : ScriptableObject
     public string className;
     public int cost;
     public int MaxHealth;
+    [Header("Weapon")]
     public int damage;
-    public Mesh alliesMesh;
-    public Mesh axisMesh;
+    public int fireRate;
+    public int ammo;
     [TextArea(3,10)]
     public string Description;
     [Space]

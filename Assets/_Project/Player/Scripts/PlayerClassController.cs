@@ -12,7 +12,21 @@ public class PlayerClassController : MonoBehaviour
     [SerializeField] private WeaponController weapon;
     [SerializeField] private PlayerTeamController teamController;
 
-    public PlayerClass PlayerClass { get => playerClass; set => playerClass = value; }
+    public PlayerClass PlayerClass
+    {
+        get => playerClass;
+        set
+        {
+            playerClass = value;
+            if (playerClass == null) return;
+
+            playerHealth.SetMaxHealth(value.MaxHealth);
+            weapon.Damage = value.damage;
+            weapon.FireRate = value.fireRate;
+            weapon.Ammo = value.ammo;
+
+        }
+    }
     public PlayerHealth PlayerHealth { get => playerHealth; set => playerHealth = value; }
     public InfantaryInputs InfantaryInputs { get => infantaryInputs; set => infantaryInputs = value; }
     public InfantryGamepadController Controller { get => controller; set => controller = value; }

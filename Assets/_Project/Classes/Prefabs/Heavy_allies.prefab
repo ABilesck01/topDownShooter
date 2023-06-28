@@ -1198,11 +1198,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firePoint: {fileID: 5207848321031026228}
   fireRange: 100
-  fireRate: 2
+  fireRate: 7
   ammo: 30
+  damage: 5
   timeToReload: 3.1
   trailRenderer: {fileID: 5047483787421211630, guid: 7ed34f10a3fa95344a949366b231c6f1, type: 3}
-  gunAudio: {fileID: 0}
+  gunAudio: {fileID: 4831112985021633743}
   muzzleFlash: {fileID: 5369904162096901290}
   bloodImpact: {fileID: 2156340295039664545, guid: 3f22f2cbf398e894fa6ef02c54fa15a4, type: 3}
   infantaryInputs: {fileID: 0}

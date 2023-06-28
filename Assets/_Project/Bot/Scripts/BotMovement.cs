@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 public class BotMovement : MonoBehaviour
 {
     [SerializeField] private float walkPointRange;
+    [SerializeField] private Transform walk;
     [SerializeField] private LayerMask groundLayer;
 
     private Vector3 walkPoint;

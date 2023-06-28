@@ -34,12 +34,12 @@
                 },
                 {
                     "name": "Reload",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "1fcaed5c-5f9c-484a-812b-0407c99b52ab",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Join",

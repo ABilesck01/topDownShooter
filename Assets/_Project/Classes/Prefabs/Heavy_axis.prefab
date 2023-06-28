@@ -209,7 +209,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5207848321514231852, guid: 69d5df497f087be4eb2c2a3f0584ef58, type: 3}
       propertyPath: m_Name
-      value: Heavy_axis (1)
+      value: Heavy_axis
       objectReference: {fileID: 0}
     - target: {fileID: 5207848321514231871, guid: 69d5df497f087be4eb2c2a3f0584ef58, type: 3}
       propertyPath: m_RootOrder

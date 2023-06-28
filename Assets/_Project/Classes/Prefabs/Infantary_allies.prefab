@@ -970,6 +970,7 @@ MonoBehaviour:
   fireRange: 100
   fireRate: 2
   ammo: 4
+  damage: 12
   timeToReload: 3.1
   trailRenderer: {fileID: 5047483787421211630, guid: 7ed34f10a3fa95344a949366b231c6f1, type: 3}
   gunAudio: {fileID: 0}

@@ -17,7 +17,12 @@ public class PlayerHealth : MonoBehaviour, IDamegeble
     public UnityEvent OnRespawn;
     public Animator animator;
 
-    public int MaxHealth { get => maxHealth;}
+    public int MaxHealth { get => maxHealth; set => MaxHealth = value; }
+
+    public void SetMaxHealth(int value)
+    {
+        maxHealth = value;
+    }
 
     private void Start()
     {
@@ -30,16 +35,19 @@ public class PlayerHealth : MonoBehaviour, IDamegeble
         Destroy(gameObject);
     }
 
-    public void TakeDamage(int amount)
+    public bool TakeDamage(int amount)
     {
-        if(isDead) return;
+        if(isDead) return false;
 
         currentHealth -= amount;
         OnDamageTaken?.Invoke(currentHealth);
         if (currentHealth <= 0)
         {
             Die();
+            return true;
         }
+
+        return false;
     }
 
     [ContextMenu("Test Damage")]

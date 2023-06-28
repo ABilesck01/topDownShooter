@@ -40,7 +40,7 @@ public class BotController : MonoBehaviour
         {
             botState = BotState.follow;
             botMovement.target = coneView.target;
-            botAttack.SetTarget(null);
+            //botAttack.SetTarget(null);
             return;
         }
 
@@ -48,7 +48,7 @@ public class BotController : MonoBehaviour
         {
             botMovement.target = null;
             botMovement.StopAgent();
-            botAttack.SetTarget(coneView.target);
+            //botAttack.SetTarget(coneView.target);
             botState = BotState.attack;
             return;
         }

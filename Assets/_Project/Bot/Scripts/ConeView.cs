@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ConeView : MonoBehaviour
 {
@@ -9,7 +10,9 @@ public class ConeView : MonoBehaviour
     [SerializeField] private float viewAngle = 45f;
     [SerializeField] private Vector3 offset;
     [SerializeField] private LayerMask targetLayer;
-
+    [Space]
+    public UnityEvent<Transform> OnFindTarget;
+    public UnityEvent OnLostTarget;
     [Space]
     public Transform target;
 
@@ -57,8 +60,12 @@ public class ConeView : MonoBehaviour
         {
             if(Vector3.Distance(myTransform.position, target.transform.position) < viewRange / 2)
             {
-                this.target = target.transform;
-                return;
+                if (Physics.Raycast(transform.position, (target.transform.position - transform.position), out RaycastHit hit, viewAngle))
+                {
+                    this.target = target.transform;
+                    OnFindTarget?.Invoke(this.target);
+                    return;
+                }
             }
 
             Vector3 directionToTarget = target.transform.position - (myTransform.position + offset);
@@ -66,12 +73,18 @@ public class ConeView : MonoBehaviour
 
             if (angleToTarget <= viewAngle / 2f)
             {
-                this.target = target.transform;
-                return;
+                if(Physics.Raycast(transform.position, (target.transform.position - transform.position), out RaycastHit hit, viewAngle))
+                {
+                    this.target = target.transform;
+                    OnFindTarget?.Invoke(this.target);
+                    return;
+                }
+                
             }
         }
 
         currentState = ConeViewState.noView;
+        OnLostTarget?.Invoke();
         target = null;
     }
 

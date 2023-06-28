@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 
@@ -11,6 +12,7 @@ public class WeaponController : MonoBehaviour
     [SerializeField] private float fireRange = 100f;
     [SerializeField] private float fireRate = 0.1f;
     [SerializeField] private int ammo;
+    [SerializeField] private int damage;
     [SerializeField] private float timeToReload;
     [SerializeField] private TrailRenderer trailRenderer;
     [Space]
@@ -21,9 +23,12 @@ public class WeaponController : MonoBehaviour
     [HideInInspector]public InfantaryInputs infantaryInputs;
     private Animator animator;
 
+    public UnityEvent OnKillPlayer;
+
     private int currentAmmo;
     [HideInInspector]public float nextFireTime;
     private bool hasShot = false;
+    private bool isReloading = false;
 
     private WeaponView weaponView;
 
@@ -36,6 +41,9 @@ public class WeaponController : MonoBehaviour
         }
     }
 
+    public int Ammo { get => ammo; set => ammo = value; }
+    public int Damage { get => damage; set => damage = value; }
+    public float FireRate { get => fireRate; set => fireRate = value; }
 
     public virtual void Awake()
     {
@@ -65,16 +73,27 @@ public class WeaponController : MonoBehaviour
     public virtual void Update()
     {
         GetInputs();
+        GetReloadInputs();
+    }
+
+    public void GetReloadInputs()
+    {
+        if (infantaryInputs.ReloadInput && !isReloading)
+        {
+            StartCoroutine(Reload());
+        }
     }
 
     public void Shoot()
     {
         if (currentAmmo <= 0) return;
 
+        if (isReloading) return;
+
         hasShot = true;
 
         animator.SetTrigger("fire");
-        gunAudio.Play();
+        gunAudio?.Play();
         muzzleFlash.Play();
         
         RaycastHit hit;
@@ -85,7 +104,8 @@ public class WeaponController : MonoBehaviour
             if (hit.transform.TryGetComponent(out IDamegeble dmg))
             {
                 Instantiate(bloodImpact, hit.point, Quaternion.LookRotation(hit.normal));
-                dmg.TakeDamage(10);
+                if (dmg.TakeDamage(damage))
+                    OnKillPlayer?.Invoke();
             }
             Debug.Log("Hit object: " + hit.transform.name);
         }
@@ -93,7 +113,7 @@ public class WeaponController : MonoBehaviour
         nextFireTime = Time.time + 1f / fireRate;
 
         currentAmmo--;
-        weaponView.SetAmmo(currentAmmo);
+        weaponView?.SetAmmo(currentAmmo);
         if (currentAmmo <= 0) 
         {
             StartCoroutine(Reload());
@@ -104,11 +124,13 @@ public class WeaponController : MonoBehaviour
 
     private IEnumerator Reload()
     {
-        weaponView.SetReloading();
+        isReloading = true;
+        weaponView?.SetReloading();
         animator.SetTrigger("reload");
         yield return new WaitForSeconds(timeToReload);
         currentAmmo = ammo;
-        weaponView.SetAmmo(currentAmmo);
+        weaponView?.SetAmmo(currentAmmo);
+        isReloading = false;
     }
 
     private IEnumerator SpawnTrail(TrailRenderer trail, RaycastHit hit)
