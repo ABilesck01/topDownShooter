@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -27,22 +29,32 @@ public class GameManager : MonoBehaviour
     [Header("End Screen")]
     [SerializeField] private GameObject endScreen;
     [SerializeField] private TextMeshProUGUI txtVictory;
+    [SerializeField] private Button btnBack;
 
     private float currentMatchTime = 0;
 
     private List<PlayerClassView> alliesTeam = new List<PlayerClassView>();
     private List<PlayerClassView> axisTeam = new List<PlayerClassView>();
 
+    public static int setAlliesCount = 0;
+    public static int setAxisCount = 0;
+
     private void Start()
     {
+        alliesBotsCount = setAlliesCount;
+        axisBotsCount = setAxisCount;
+
         alliesPoints = 0;
-        txtAlliesPoints.text = alliesPoints.ToString();
         axisPoints = 0;
+
+        txtAlliesPoints.text = alliesPoints.ToString();
         txtAxisPoints.text = axisPoints.ToString();
         currentMatchTime = matchTime;
 
         SpawnAlliesBots();
         SpawnAxisBots();
+
+        btnBack.onClick.AddListener(BtnBackClick);
 
     }
 
@@ -119,7 +131,14 @@ public class GameManager : MonoBehaviour
         }
 
         txtVictory.text = "The match was a tie!";
+
+        EventSystem.current.SetSelectedGameObject(btnBack.gameObject);
         
+    }
+
+    private void BtnBackClick()
+    {
+        SceneManager.LoadScene(MainMenuController.sceneName);
     }
 
     private void Update()

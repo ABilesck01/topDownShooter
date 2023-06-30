@@ -19,6 +19,7 @@ public class MainMenuController : MonoBehaviour
     {
         EventSystem.current.SetSelectedGameObject(firstSelected);
 
+        btnLocalPlay.onClick.AddListener(BtnLocalPlayClick);
         btnSettings.onClick.AddListener(BtnSettingsClick);
         btnQuit.onClick.AddListener(BtnQuitClick);
     }
@@ -36,6 +37,11 @@ public class MainMenuController : MonoBehaviour
     private void SceneManager_sceneUnloaded(Scene arg0)
     {
         EventSystem.current.SetSelectedGameObject(firstSelected);
+    }
+
+    private void BtnLocalPlayClick()
+    {
+        SceneManager.LoadScene(LocalPlayController.sceneName, LoadSceneMode.Additive);
     }
 
     private void BtnSettingsClick()
