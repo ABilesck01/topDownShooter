@@ -1,65 +1,37 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class BotController : MonoBehaviour
+public class BotController : TeamController
 {
-    public BotState botState;
+    [SerializeField] private EnemyClassController alliesEnemyController;
+    [SerializeField] private EnemyClassController axisEnemyController;
 
-    private BotAttack botAttack;
-    private BotMovement botMovement;
-    private ConeView coneView;
-    private BotHealth botHealth;
+    public UnityEvent OnRespawn;
 
-    private void Awake()
+    private void Start()
     {
-        botAttack = GetComponent<BotAttack>();
-        botMovement = GetComponent<BotMovement>();
-        botHealth = GetComponent<BotHealth>();
-        coneView = GetComponent<ConeView>();
+        OnRespawn.AddListener(InstantiateEnemy);
+        InstantiateEnemy();
     }
 
-    private void Update()
+    private void InstantiateEnemy()
     {
-        if (botHealth.isDead)
+        EnemyClassController bot;
+        if (Team == PlayerTeam.Allies)
         {
-            botMovement.StopAgent();
-            botMovement.target = null;
-            botState = BotState.dead;
-            return;
+            Transform spawnPoint = SpawnPointController.instance.GetRandomAlliesSpawn();
+            bot = Instantiate(alliesEnemyController, spawnPoint.position, spawnPoint.rotation);
+        }
+        else
+        {
+            Transform spawnPoint = SpawnPointController.instance.GetRandomAxisSpawn();
+            bot = Instantiate(axisEnemyController, spawnPoint.position, spawnPoint.rotation);
         }
 
-        if(coneView.currentState == ConeViewState.noView)
-        {
-            botMovement.target = null;
-            botState = BotState.patrol;
-            return;
-        }
-
-        if(coneView.currentState == ConeViewState.onView)
-        {
-            botState = BotState.follow;
-            botMovement.target = coneView.target;
-            //botAttack.SetTarget(null);
-            return;
-        }
-
-        if(coneView.currentState == ConeViewState.onRange)
-        {
-            botMovement.target = null;
-            botMovement.StopAgent();
-            //botAttack.SetTarget(coneView.target);
-            botState = BotState.attack;
-            return;
-        }
-
+        bot.BotHealth.OnDeath.AddListener(OnPlayerDeath);
+        bot.BotHealth.OnRespawn = OnRespawn;
     }
-}
-
-public enum BotState
-{
-    patrol,
-    follow,
-    attack,
-    dead
 }

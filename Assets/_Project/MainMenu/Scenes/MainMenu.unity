@@ -132,11 +132,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2624847984029146100, guid: c5d60dc727cf9704588df1515a029f94, type: 3}
       propertyPath: m_text
-      value: Settings
+      value: Options
       objectReference: {fileID: 0}
     - target: {fileID: 3497240898590185561, guid: c5d60dc727cf9704588df1515a029f94, type: 3}
       propertyPath: m_Name
-      value: BtnSettings
+      value: BtnOptions
       objectReference: {fileID: 0}
     - target: {fileID: 3537182152184362151, guid: c5d60dc727cf9704588df1515a029f94, type: 3}
       propertyPath: m_Navigation.m_SelectOnUp

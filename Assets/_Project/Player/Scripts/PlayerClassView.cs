@@ -7,11 +7,9 @@ using UnityEngine.Events;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
 
-public class PlayerClassView : MonoBehaviour
+public class PlayerClassView : TeamController
 {
     [SerializeField] private PlayerClass[] classes;
-    [Space]
-    [SerializeField] private PlayerTeam team;
     [Space]
     [SerializeField] private TextMeshProUGUI txtName;
     [SerializeField] private TextMeshProUGUI txtCost;
@@ -33,9 +31,6 @@ public class PlayerClassView : MonoBehaviour
 
     private int points = 0;
 
-    public UnityAction OnPlayerDeath;
-
-    public PlayerTeam Team { get => team; set => team = value; }
     public int Points
     {
         get => points; 
@@ -65,7 +60,7 @@ public class PlayerClassView : MonoBehaviour
                 txtHealth.text = classes[index].MaxHealth.ToString();
                 txtDmg.text = classes[index].damage.ToString();
                 txtDescr.text = classes[index].Description;
-                if(team == PlayerTeam.Allies)
+                if(Team == PlayerTeam.Allies)
                     classImage.sprite = classes[index].alliesImage;
                 else
                     classImage.sprite = classes[index].axisImage;
@@ -90,19 +85,16 @@ public class PlayerClassView : MonoBehaviour
                 Navigation navigation = buttons[i].navigation;
                 navigation.mode = Navigation.Mode.Explicit;
 
-                // Set the navigation of the current button to move left and right
                 if (i > 0 && i < buttons.Count - 1)
                 {
                     navigation.selectOnLeft = buttons[i - 1];
                     navigation.selectOnRight = buttons[i + 1];
                 }
-                // Set the navigation of the first button to move right only
                 else if (i == 0)
                 {
                     navigation.selectOnLeft = null;
                     navigation.selectOnRight = buttons[i + 1];
                 }
-                // Set the navigation of the last button to move left only
                 else if (i == buttons.Count - 1)
                 {
                     navigation.selectOnLeft = buttons[i - 1];
@@ -119,7 +111,7 @@ public class PlayerClassView : MonoBehaviour
         Debug.Log($"Selected class {classes[index].className}");
 
         PlayerClassController player;
-        if (team == PlayerTeam.Allies)
+        if (Team == PlayerTeam.Allies)
         {
             Transform spawnPoint = SpawnPointController.instance.GetRandomAlliesSpawn();
             player = Instantiate(classes[index].playerAllies, spawnPoint.position, spawnPoint.rotation);
@@ -131,10 +123,8 @@ public class PlayerClassView : MonoBehaviour
         }
 
         player.InfantaryInputs = infantaryInputs;
-
         player.Controller.SetInfantaryInput(infantaryInputs);
         player.Weapon.SetInfantaryInput(infantaryInputs);
-
         player.PlayerClass = classes[index];
         player.Weapon.WeaponView = weaponView;
 

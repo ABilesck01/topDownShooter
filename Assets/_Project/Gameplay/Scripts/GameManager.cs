@@ -11,6 +11,12 @@ public class GameManager : MonoBehaviour
     [Header("Match Settings")]
     [SerializeField] private int pointsToWin = 25;
     [SerializeField] private float matchTime;
+    [Header("Bots settings")]
+    [Range(0f, 5f), SerializeField] private int alliesBotsCount = 0;
+    [Range(0f, 5f), SerializeField] private int axisBotsCount = 0;
+    [Space]
+    [SerializeField] private BotController alliesBot;
+    [SerializeField] private BotController axisBot;
     [Header("Score")]
     [SerializeField] private int alliesPoints = 0;
     [SerializeField] private int axisPoints = 0;
@@ -34,6 +40,30 @@ public class GameManager : MonoBehaviour
         axisPoints = 0;
         txtAxisPoints.text = axisPoints.ToString();
         currentMatchTime = matchTime;
+
+        SpawnAlliesBots();
+        SpawnAxisBots();
+
+    }
+
+    private void SpawnAlliesBots()
+    {
+        for (int i = 0; i < alliesBotsCount; i++)
+        {
+            var bot = Instantiate(alliesBot);
+            bot.Team = PlayerTeam.Allies;
+            bot.OnPlayerDeath += AddAxisPoints;
+        }
+    }
+
+    private void SpawnAxisBots()
+    {
+        for (int i = 0; i < axisBotsCount; i++)
+        {
+            var bot = Instantiate(axisBot);
+            bot.Team = PlayerTeam.Axis;
+            bot.OnPlayerDeath += AddAlliesPoints;
+        }
     }
 
     public void OnPlayerEnter(PlayerInput player)

@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &865365770928776102
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 379510968882090783}
+  m_Layer: 0
+  m_Name: vision
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &379510968882090783
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 865365770928776102}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.3981814, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8414609379117707462}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8414609377679618069
 GameObject:
   m_ObjectHideFlags: 0
@@ -1439,7 +1470,8 @@ GameObject:
   - component: {fileID: 8414609379117707475}
   - component: {fileID: 8414609379117707474}
   - component: {fileID: 8867419861297255956}
-  m_Layer: 0
+  - component: {fileID: 9156722153274790631}
+  m_Layer: 7
   m_Name: Soldier_bot_axis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1453,7 +1485,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8414609379117707466}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.75, y: 0, z: 1.27}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1463,6 +1495,7 @@ Transform:
   - {fileID: 8414609378979970374}
   - {fileID: 8414609379452266848}
   - {fileID: 8414609379481331206}
+  - {fileID: 379510968882090783}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1583,9 +1616,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.3
-  m_Height: 1.8
+  m_Height: 1.8603922
   m_Direction: 1
-  m_Center: {x: 0, y: 0.95, z: 0}
+  m_Center: {x: 0, y: 0.9198038, z: 0}
 --- !u!114 &8414609379117707484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1602,7 +1635,7 @@ MonoBehaviour:
   fireRange: 50
   fireRate: 0.6
   ammo: 4
-  damage: 10
+  damage: 50
   timeToReload: 3.1
   trailRenderer: {fileID: 5047483787421211630, guid: 7ed34f10a3fa95344a949366b231c6f1, type: 3}
   gunAudio: {fileID: 8867419861297255956}
@@ -1653,6 +1686,7 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 64
+  myTransform: {fileID: 379510968882090783}
 --- !u!114 &8414609379117707474
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1668,6 +1702,12 @@ MonoBehaviour:
   maxHealth: 50
   isDead: 0
   animator: {fileID: 8414609379117707461}
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRespawn:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!82 &8867419861297255956
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1764,6 +1804,21 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &9156722153274790631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8414609379117707466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7b5a696950a259408ae29e72b299b98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyController: {fileID: 8414609379117707475}
+  botHealth: {fileID: 8414609379117707474}
+  botAttack: {fileID: 8414609379117707484}
 --- !u!1 &8414609379138334029
 GameObject:
   m_ObjectHideFlags: 0

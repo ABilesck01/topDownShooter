@@ -9,6 +9,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float detectionRadius = 5f;
     [SerializeField] private float walkRadius = 15f;
     [SerializeField] private LayerMask playerLayer;
+    [SerializeField] private Transform myTransform;
 
     private BotAttack botAttack;
     private BotHealth health;
@@ -25,6 +26,7 @@ public class EnemyController : MonoBehaviour
         animator = GetComponent<Animator>();
         botAttack = GetComponent<BotAttack>();
         health = GetComponent<BotHealth>();
+        myTransform = transform;
     }
 
     private void Start()
@@ -40,8 +42,10 @@ public class EnemyController : MonoBehaviour
 
     private void ResetTarget()
     {
+        Debug.Log("ResetTarget");
         player = null;
         playerInRange = false;
+        agent.isStopped = false;
         SetNewDestination();
     }
 
@@ -51,11 +55,11 @@ public class EnemyController : MonoBehaviour
 
         CheckForPlayer();
 
-        if (!playerInRange && !agent.pathPending && agent.remainingDistance < 0.5f)
+        if (!playerInRange && !agent.pathPending && agent.remainingDistance < 0.15f)
         {
             SetNewDestination();
         }
-
+        
         if (playerInRange)
         {
             agent.isStopped = true;
@@ -68,13 +72,13 @@ public class EnemyController : MonoBehaviour
 
     private void FacePlayer()
     {
-        Vector3 direction = player.position - transform.position;
+        Vector3 direction = player.position - myTransform.position;
         direction.y = 0f;
 
         if (direction != Vector3.zero)
         {
             Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
+            myTransform.rotation = Quaternion.Slerp(myTransform.rotation, targetRotation, Time.deltaTime * 15f);
         }
     }
 
@@ -88,15 +92,24 @@ public class EnemyController : MonoBehaviour
 
     private void CheckForPlayer()
     {
-        var circle = Physics.OverlapSphere(transform.position, detectionRadius, playerLayer);
+        var circle = Physics.OverlapSphere(myTransform.position, detectionRadius, playerLayer);
 
-        playerInRange = circle.Length > 0;
-
-        if (playerInRange)
+        if (circle.Length > 0)
         {
             player = circle[0].transform;
 
-            Shoot();
+            Vector3 direction = player.position - myTransform.position;
+            Ray ray = new Ray(myTransform.position, direction.normalized);
+            RaycastHit hit;
+
+            Debug.DrawRay(myTransform.position, direction * detectionRadius, Color.red, 0.1f);
+
+            playerInRange = Physics.Raycast(ray, out hit, detectionRadius, playerLayer);
+
+            if (playerInRange)
+            {
+                Shoot();
+            }
         }
     }
 
@@ -109,7 +122,7 @@ public class EnemyController : MonoBehaviour
     {
         Vector3 randomPoint = Random.insideUnitSphere * walkRadius;
         NavMesh.SamplePosition(randomPoint, out NavMeshHit hit, walkRadius, NavMesh.AllAreas);
-
+        Debug.Log(hit.position);
         agent.SetDestination(hit.position);
     }
 }
