@@ -3243,6 +3243,8 @@ MonoBehaviour:
   maps:
   - MapScene: Shipment
     mapIcon: {fileID: 21300000, guid: a32b61e82ee5f234fb05d0d5afeee5a9, type: 3}
+  - MapScene: Normandy Beach
+    mapIcon: {fileID: 21300000, guid: cfc81b8254fe0bb41ac79e7cab802a52, type: 3}
   dropdownMaps: {fileID: 555668633}
   alliesBotsAmount: {fileID: 1790414930}
   axisBotsAmount: {fileID: 1598615927}
