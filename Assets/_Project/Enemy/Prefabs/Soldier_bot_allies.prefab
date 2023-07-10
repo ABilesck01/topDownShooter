@@ -629,11 +629,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   patrolSpeed: 3
   detectionRadius: 8
-  walkRadius: 15
+  walkRadius: 30
+  height: 1
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
-  myTransform: {fileID: 4742671985060550509}
 --- !u!114 &1250580181543028210
 MonoBehaviour:
   m_ObjectHideFlags: 0

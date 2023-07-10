@@ -394,6 +394,7 @@ MonoBehaviour:
   endScreen: {fileID: 2488952609681315240}
   txtVictory: {fileID: 2488952610611716203}
   btnBack: {fileID: 3537182153348926973}
+  getValueFromInspector: 0
 --- !u!1 &2488952610611716201
 GameObject:
   m_ObjectHideFlags: 0
@@ -1094,7 +1095,7 @@ MonoBehaviour:
   m_NotificationBehavior: 2
   m_MaxPlayerCount: 2
   m_AllowJoining: 1
-  m_JoinBehavior: 0
+  m_JoinBehavior: 1
   m_PlayerJoinedEvent:
     m_PersistentCalls:
       m_Calls:
@@ -1114,7 +1115,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_JoinAction:
-    m_UseReference: 0
+    m_UseReference: 1
     m_Action:
       m_Name: Join
       m_Type: 0
@@ -1124,7 +1125,7 @@ MonoBehaviour:
       m_Interactions: 
       m_SingletonActionBindings: []
       m_Flags: 0
-    m_Reference: {fileID: 0}
+    m_Reference: {fileID: -1712715101333626808, guid: 4df07f13c2092584f8b52d095a246c81, type: 3}
   m_PlayerPrefab: {fileID: 1714983375588079544, guid: 594610c8cb918b74b83d37c79a1e0150, type: 3}
   m_SplitScreen: 1
   m_MaintainAspectRatioInSplitScreen: 0

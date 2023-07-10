@@ -1207,6 +1207,9 @@ MonoBehaviour:
   muzzleFlash: {fileID: 5369904162096901290}
   bloodImpact: {fileID: 2156340295039664545, guid: 3f22f2cbf398e894fa6ef02c54fa15a4, type: 3}
   infantaryInputs: {fileID: 0}
+  OnKillPlayer:
+    m_PersistentCalls:
+      m_Calls: []
   nextFireTime: 0
 --- !u!114 &5207848321514231863
 MonoBehaviour:
@@ -1278,7 +1281,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 5b814ad1c25072344a3ff7302388becb, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0

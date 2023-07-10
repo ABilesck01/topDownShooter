@@ -11,14 +11,12 @@ public class InfantryKeyboardController : MonoBehaviour
     [SerializeField] private LayerMask ground;
     //private Rigidbody rb;
 
-    private PlayerDeviceController playerDeviceController;
     private CharacterController characterController;
     private Camera mainCamera;
     private Vector3 movement;
     
     private void Start()
     {
-        playerDeviceController = GetComponent<PlayerDeviceController>();
         characterController = GetComponent<CharacterController>();
         mainCamera = Camera.main;
     }
@@ -36,8 +34,6 @@ public class InfantryKeyboardController : MonoBehaviour
 
     private void Move()
     {
-        if(controlScheme != playerDeviceController.device) return;
-        
         characterController.Move(moveSpeed * Time.deltaTime * movement);
 
         // Rotate the player to face the mouse position

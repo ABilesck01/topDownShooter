@@ -8,9 +8,10 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float patrolSpeed = 3f;
     [SerializeField] private float detectionRadius = 5f;
     [SerializeField] private float walkRadius = 15f;
+    [SerializeField] private float height = 1;
     [SerializeField] private LayerMask playerLayer;
-    [SerializeField] private Transform myTransform;
 
+    private Transform myTransform;
     private BotAttack botAttack;
     private BotHealth health;
 
@@ -98,11 +99,14 @@ public class EnemyController : MonoBehaviour
         {
             player = circle[0].transform;
 
-            Vector3 direction = player.position - myTransform.position;
-            Ray ray = new Ray(myTransform.position, direction.normalized);
+            Vector3 positionWithHeight = new Vector3(myTransform.position.x, myTransform.position.y + height, myTransform.position.z);
+            Vector3 playerPositionWithHeight = new Vector3(player.position.x, player.position.y + height, player.position.z);
+
+            Vector3 direction = playerPositionWithHeight - positionWithHeight;
+            Ray ray = new Ray(positionWithHeight, direction.normalized);
             RaycastHit hit;
 
-            Debug.DrawRay(myTransform.position, direction * detectionRadius, Color.red, 0.1f);
+            Debug.DrawRay(positionWithHeight, direction * detectionRadius, Color.red, 0.1f);
 
             playerInRange = Physics.Raycast(ray, out hit, detectionRadius, playerLayer);
 

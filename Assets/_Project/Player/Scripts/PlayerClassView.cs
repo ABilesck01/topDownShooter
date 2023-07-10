@@ -108,6 +108,12 @@ public class PlayerClassView : TeamController
 
     private void InstantiatePlayer(int index)
     {
+        if(points < classes[index].cost)
+        {
+            Debug.Log("Dont have enough points");
+            return;
+        }
+
         Debug.Log($"Selected class {classes[index].className}");
 
         PlayerClassController player;

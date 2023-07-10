@@ -24,6 +24,6 @@ EditorBuildSettings:
     path: Assets/_Project/Gameplay/Scenes/Maps/NormandyBeach/Normandy Beach.unity
     guid: 96ab6a4c3fe007e4887fe61c691423b8
   - enabled: 1
-    path: Assets/_Project/Gameplay/Scenes/Maps/Shipment/shipment.unity
+    path: Assets/_Project/Gameplay/Maps/Shipment/shipment.unity
     guid: 11fad12bd54854a4db064fee4298bdce
   m_configObjects: {}

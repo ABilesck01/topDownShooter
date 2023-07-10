@@ -1635,7 +1635,7 @@ MonoBehaviour:
   fireRange: 50
   fireRate: 0.6
   ammo: 4
-  damage: 50
+  damage: 10
   timeToReload: 3.1
   trailRenderer: {fileID: 5047483787421211630, guid: 7ed34f10a3fa95344a949366b231c6f1, type: 3}
   gunAudio: {fileID: 8867419861297255956}
@@ -1682,11 +1682,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   patrolSpeed: 3
   detectionRadius: 8
-  walkRadius: 15
+  walkRadius: 30
+  height: 1
   playerLayer:
     serializedVersion: 2
     m_Bits: 64
-  myTransform: {fileID: 379510968882090783}
 --- !u!114 &8414609379117707474
 MonoBehaviour:
   m_ObjectHideFlags: 0

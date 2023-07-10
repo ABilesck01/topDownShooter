@@ -31,6 +31,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI txtVictory;
     [SerializeField] private Button btnBack;
 
+    [Space(50)]
+    [SerializeField] private bool getValueFromInspector = false;
+
     private float currentMatchTime = 0;
 
     private List<PlayerClassView> alliesTeam = new List<PlayerClassView>();
@@ -41,8 +44,11 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        alliesBotsCount = setAlliesCount;
-        axisBotsCount = setAxisCount;
+        if(!getValueFromInspector)
+        {
+            alliesBotsCount = setAlliesCount;
+            axisBotsCount = setAxisCount;
+        }
 
         alliesPoints = 0;
         axisPoints = 0;
